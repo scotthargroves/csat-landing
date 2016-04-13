@@ -1,42 +1,42 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-	
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		
-		<style type="text/css">
-		  body {
-		    margin: 0;
-		    mso-line-height-rule: exactly;
-		    padding: 0;
-		    min-width: 100%;
-		  }
-		  table {
-		    border-collapse: collapse;
-		    border-spacing: 0;
-		  }
-		  td {
-		    padding: 0;
-		    vertical-align: top;
-		  }
-		  .spacer,
-		  .border {
-		    font-size: 1px;
-		    line-height: 1px;
-		  }
-		  .spacer {
-		    width: 100%;
-		  }
-		  img {
-		    border: 0;
-		    -ms-interpolation-mode: bicubic;
-		  }
-		  .centered {
-		   Margin-left: auto;
-		   Margin-right: auto;
-  		}
-  		
-  		  .wrapper {
+  
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <style type="text/css">
+      body {
+        margin: 0;
+        mso-line-height-rule: exactly;
+        padding: 0;
+        min-width: 100%;
+      }
+      table {
+        border-collapse: collapse;
+        border-spacing: 0;
+      }
+      td {
+        padding: 0;
+        vertical-align: top;
+      }
+      .spacer,
+      .border {
+        font-size: 1px;
+        line-height: 1px;
+      }
+      .spacer {
+        width: 100%;
+      }
+      img {
+        border: 0;
+        -ms-interpolation-mode: bicubic;
+      }
+      .centered {
+       Margin-left: auto;
+       Margin-right: auto;
+      }
+      
+        .wrapper {
     display: table;
     table-layout: fixed;
     width: 100%;
@@ -47,7 +47,7 @@
   table.wrapper {
     table-layout: fixed;
   }
-  		  .wrapper a {
+        .wrapper a {
     text-decoration: underline;
     transition: all .2s;
   }
@@ -55,75 +55,102 @@
     font-size: 36px;
     Margin-bottom: 18px;
   }
-		</style> 
+    </style> 
 
-	</head>
+  </head>
 
 <body>
-	
-	
-<center class="wrapper" style="display: table;table-layout: fixed;width: 100%;min-width: 320px;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;">	
-		
+  
+  <!-- AGENT REPLY -->
+{% assign emails = case.emails %}
+{% assign threadlength = emails.size|minus:1 %}  
+{% for email in emails reversed %}
+    {% if forloop.first %}
+        {{email.new_html}}
+        {% if email.agent %}
+            {%capture sig-exist%}
+              {{email.agent.signature|size}}
+            {%endcapture%}
+            {% if sig-exist != '0'%}
+      <div style="margin-top:10px;">
+        {{email.agent.signature | newline_to_br}}
+      </div>
+            {% else %}
+                <p>
+                  --<br />
+                  {{email.agent.name_public}}<br />
+                </p>
+        {% endif %}
+  
+  
+<center class="wrapper" style="display: table;table-layout: fixed;width: 100%;min-width: 320px;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;">  
+    
 <!-- NEW CSAT BLOCK -->
 <table class="centered" style="border-collapse: collapse;border-spacing: 0;Margin-left: auto;Margin-right: auto; width: 100%; height: auto; margin-top: 15px; padding-top: 15px; padding-bottom: 15px; background: #f2f2f2; border-radius: 3px; overflow: hidden;">
-	<tbody>
-		 <tr>
-		 	<td>
-		
-			<h1 style="text-align: center; font-size: 16px; font-family: Avenir,sans-serif !important; color: #383838;">
-				How did I do?
-			</h1>
-			
-			<!-- RATE BLOCK -->
-                          <p style="Margin-top: 0; text-align:center; color: #565656;font-family: sans-serif;font-size: 16px;line-height: 25px;">
+  <tbody>
+     <tr>
+       <td>
+    
+        <h1 style="text-align: center; font-size: 16px; font-family: Avenir,sans-serif !important; color: #383838;">
+          How did I do?
+        </h1>
+      
+      <!-- RATE BLOCK -->
+        <p style="Margin-top: 0; text-align:center; color: #565656;font-family: sans-serif;font-size: 16px;line-height: 25px;">
                             <!-- RATE LOOP -->
-                            
+                              
                                   <span class="customer-feedback-rating">
-                                    <a href="" style="text-decoration: none;">
-										<img style="height:29px;width:30px;" src="https://ci4.googleusercontent.com/proxy/RqaDZpOtYZVSKTAzoPFgnTkiF2QUXDkIMH9BSGcSNJh_fFHxjnwvDJiGuv2vn8lxD4h6ZwUTTKM92uL1ViInss67SRsq3j-qb4Ck-EpQqv6CUWCic3bNWp6xplNQSIRYRa_c9-EHQw=s0-d-e1-ft#https://cdn.desk.com/assets/rating_type200_3-0c4460f91dd211b465e6e170587815c7.png" alt="  :D">
-                					</a>
+                                    <a href="http://desk-feedback.herokuapp.com/csat?i={{ case.created_at | date: '%d' }}{{case.id}}{{ case.created_at | date: '%S' }}&c={{ case.created_at | date: '%M' }}3{{ case.created_at | date: '%m' }}&h={{ checksum }}&r=4&t={{threadlength}}&a={{email.agent.id}}&ic={{forloop.rindex}}" style="text-decoration: none;">
+                  <img style="height:29px;width:30px;" src="https://ci4.googleusercontent.com/proxy/RqaDZpOtYZVSKTAzoPFgnTkiF2QUXDkIMH9BSGcSNJh_fFHxjnwvDJiGuv2vn8lxD4h6ZwUTTKM92uL1ViInss67SRsq3j-qb4Ck-EpQqv6CUWCic3bNWp6xplNQSIRYRa_c9-EHQw=s0-d-e1-ft#https://cdn.desk.com/assets/rating_type200_3-0c4460f91dd211b465e6e170587815c7.png" alt="  :D">
+                          </a>
                                   </span>
+                                  
                                   <span style="margin: 0 10px 0 10px;"></span>
+                                  
                                   <span class="customer-feedback-rating">
-                                    <a href="" style="text-decoration: none;">
-                    <img style="height:29px;width:30px;" src="https://ci3.googleusercontent.com/proxy/qUiJplpzJziYVvBganH7voSu_mzqJ7lcOmgi_He-itNuDmTqusCYF9O9MURKaRid2vrTGI9dyrfHAngWdzGOwA5GoMAkKLFzcWtjeACXhFqEVgCIWzGVxIn9w349Mrv48IL7vAgD0A=s0-d-e1-ft#https://cdn.desk.com/assets/rating_type200_2-9d25e4d93d0b1ba6586d1dd14f7e0208.png" alt="  :)">
-                	</a>
+                                    <a href="http://desk-feedback.herokuapp.com/csat?i={{ case.created_at | date: '%d' }}{{case.id}}{{ case.created_at | date: '%S' }}&c={{ case.created_at | date: '%M' }}3{{ case.created_at | date: '%m' }}&h={{ checksum }}&r=3&t={{threadlength}}&a={{email.agent.id}}&ic={{forloop.rindex}}" style="text-decoration: none;">
+                  <img style="height:29px;width:30px;" src="https://ci3.googleusercontent.com/proxy/qUiJplpzJziYVvBganH7voSu_mzqJ7lcOmgi_He-itNuDmTqusCYF9O9MURKaRid2vrTGI9dyrfHAngWdzGOwA5GoMAkKLFzcWtjeACXhFqEVgCIWzGVxIn9w349Mrv48IL7vAgD0A=s0-d-e1-ft#https://cdn.desk.com/assets/rating_type200_2-9d25e4d93d0b1ba6586d1dd14f7e0208.png" alt="  :)">
+                          </a>
                                   </span>
+                                  
                                   <span style="margin: 0 10px 0 10px;"></span>
+                                  
                                   <span class="customer-feedback-rating">
-                                    <a href="" style="text-decoration: none;">
-                    <img style="height:29px;width:30px;" src="https://ci6.googleusercontent.com/proxy/ipDzhSyw76ij4BdDbIeDkp_kAxpGhWXskCONbvC0RyPrb0_HZg6sckSlmro_aBxiceFjSTNrQngULKkNshTPicAvuWi4s8DxHFatDYsoKI2mJjSp1RU4mumsaRpZq1ltG8UeKDkHSw=s0-d-e1-ft#https://cdn.desk.com/assets/rating_type200_1-ffb29a801e8197dfede7cd6c92fb8440.png" alt="  :|">
-                	</a>
+                                    <a href="http://desk-feedback.herokuapp.com/csat?i={{ case.created_at | date: '%d' }}{{case.id}}{{ case.created_at | date: '%S' }}&c={{ case.created_at | date: '%M' }}3{{ case.created_at | date: '%m' }}&h={{ checksum }}&r=2&t={{threadlength}}&a={{email.agent.id}}&ic={{forloop.rindex}}" style="text-decoration: none;">
+                  <img style="height:29px;width:30px;" src="https://ci6.googleusercontent.com/proxy/ipDzhSyw76ij4BdDbIeDkp_kAxpGhWXskCONbvC0RyPrb0_HZg6sckSlmro_aBxiceFjSTNrQngULKkNshTPicAvuWi4s8DxHFatDYsoKI2mJjSp1RU4mumsaRpZq1ltG8UeKDkHSw=s0-d-e1-ft#https://cdn.desk.com/assets/rating_type200_1-ffb29a801e8197dfede7cd6c92fb8440.png" alt="  :|">
+                          </a>
                                   </span>
+                                  
                                   <span style="margin: 0 10px 0 10px;"></span>
+                                  
                                   <span class="customer-feedback-rating">
-                                   <a href="" style="text-decoration: none;">
-                    <img style="height:29px;width:30px;" src="https://ci3.googleusercontent.com/proxy/Rl3Z7EbPWcTQ0nmnZvA9meQxRoxBk7H7DdDG53hkr5J_EREXqfZegKmkVKDMqm1Uvn46xDx3S3ZDcbhKELVnAvOhkvCTSqw6Mvezx-CRYwRQUw0xl7Pv8l5Q8pxWDX3tYKTbCSjw6A=s0-d-e1-ft#https://cdn.desk.com/assets/rating_type200_0-9c891b6b12dd984d8fb669f80e98d0a2.png" alt="  :D">
-                	</a>
+                                   <a href="http://desk-feedback.herokuapp.com/csat?i={{ case.created_at | date: '%d' }}{{case.id}}{{ case.created_at | date: '%S' }}&c={{ case.created_at | date: '%M' }}3{{ case.created_at | date: '%m' }}&h={{ checksum }}&r=1&t={{threadlength}}&a={{email.agent.id}}&ic={{forloop.rindex}}" style="text-decoration: none;">
+                   <img style="height:29px;width:30px;" src="https://ci3.googleusercontent.com/proxy/Rl3Z7EbPWcTQ0nmnZvA9meQxRoxBk7H7DdDG53hkr5J_EREXqfZegKmkVKDMqm1Uvn46xDx3S3ZDcbhKELVnAvOhkvCTSqw6Mvezx-CRYwRQUw0xl7Pv8l5Q8pxWDX3tYKTbCSjw6A=s0-d-e1-ft#https://cdn.desk.com/assets/rating_type200_0-9c891b6b12dd984d8fb669f80e98d0a2.png" alt="  :D">
+                          </a>
                                   </span>
                             <!-- RATE LOOP END -->
                             </p>
                           <!-- RATE BLOCK END -->
                   
                           <!-- BODY TEXT -->
-						  	<p style="text-align: center; font-size: 14px; color: #4e4e4e; font-family: Avenir,sans-serif !important;">
-		    Want to rate the product? You can do this once you have rated the Agent above.
-		  					</p>
+                <p style="text-align: center; font-size: 14px; color: #4e4e4e; font-family: Avenir,sans-serif !important;">
+        Want to rate the product? You can do this once you have rated the Agent above.
+                </p>
                           <!-- BODY TEXT -->
 
-	</tbody>
+  </tbody>
 </table>
 </center>
     
 <table style="background: #009DDC; width: 100%; border-radius: 0px 0 3px 3px; margin-bottom: 15px; border-top: 2px solid #1691c5">
   <tbody>
-	  <tr>
-		  <td>
-				<p style="font-family: Avenir,sans-serif !important; color: #fff; font-size: 14px; text-align: center;">
+    <tr>
+      <td>
+        <p style="font-family: Avenir,sans-serif !important; color: #fff; font-size: 14px; text-align: center;">
     Are you a visual learner? Check out our <a href="https://support.desk.com/?b_id=10994" style="text-decoration: underline; color: #fff;"><strong>Video Support Center</strong></a> for How-To videos.
-    			</p>
-		  </td>
-	  </tr>
+          </p>
+      </td>
+    </tr>
   </tbody>
 </table>
 
@@ -139,6 +166,34 @@ style="background-color:#00C782;border:1px solid #17bd80;border-radius:18px;colo
 
 <!-- THREAD ID -->
 
-<!--<div style="clear: both;"><span style="color:white;">This is thread #{{threadlength}}</span></div>-->
+<div style="clear: both;"><span style="color:white;">This is thread #{{threadlength}}</span></div>
+
+{% endif %}
+
+{% else %}
+
+
+<!-- CASE HISTORY THREAD -->
+
+On {{email.created_at | date: "%b %d, %Y"}} at {{email.created_at | in_time_zone: site.timezone | date: "%I:%M%p %Z"}} {{email.from}} &lt;{{email.from_address}}&gt; wrote:
+        <blockquote class="gmail_quote" style="margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+          {{email.new_html}}{% unless email.agent %}<br/>{%endunless%}
+        {% if email.agent %}
+            {% if email.agent.signature %}
+                <div style="margin-top:10px;">{{email.agent.signature | newline_to_br}}</div>
+            {% else %}
+                <p>
+                  --<br />
+                  {{email.agent.name_public}}<br />
+                </p>
+            {% endif %}
+        {% endif %}
+    {% endif %}      
+    <br />
+{% endfor %}
+          {% for i in (1..threadlength) %} {{ '</blockquote><br/>' }} {% endfor %}
+<br/>
+<p>For your reference this is Case #: <span style="background-color: #b7dcff;">{{case.id}}</span><p>
+
 </body>
 </html>
